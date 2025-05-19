@@ -1,5 +1,3 @@
-# cybersecurity_attacks
-# Cybersecurity Attacks ML Project
 # Cybersecurity Attacks ML Project
 
 ## 🚀 Overview
