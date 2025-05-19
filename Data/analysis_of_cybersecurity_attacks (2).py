@@ -526,7 +526,7 @@ plt.show()
 import pandas as pd
 from sklearn.metrics import accuracy_score
 
-# 1) خزننا مسميات النماذج وملفات التوقعات
+# 1) Model names → prediction‐file mapping
 models = {
     "ANN":           "predictions_ANN_model.csv",
     "SVM":           "predictions_SVM_model.csv",
@@ -537,30 +537,29 @@ models = {
     "Logistic Reg.": "predictions_LR_model.csv"
 }
 
-# 2) اقراؤنا للقيم الحقيقية
+# 2) Load the true labels once
 y_true_full = pd.read_csv("Y_test.csv").iloc[:, 0]
 
-accuracies = {}
-for name, filename in models.items():
-    # بدل dataset/cybersecurity_attacks.csv
-    # نقرو ملف التوقعات اللي للـ model
-    df_pred = pd.read_csv(filename)
-    # تأكد إنه فعلاً عمود prediction موجود
-    if "prediction" not in df_pred.columns:
-        raise KeyError(f"File {filename} has no column 'prediction', found {df_pred.columns.tolist()}")
+# 3) Compute accuracies
+results = []
+for name, fname in models.items():
+    df_pred = pd.read_csv(fname)
+    if "prediction" not in df_pred:
+        raise KeyError(f"{fname} missing ‘prediction’ column")
     y_pred = df_pred["prediction"]
-
-    # لو عدد التوقعات أقل من y_true_full نقص y_true_full عشان تطابق الأطوال
-    y_true = (y_true_full if len(y_true_full) == len(y_pred)
-              else y_true_full.iloc[:len(y_pred)])
-
+    # truncate y_true if lengths differ
+    y_true = y_true_full if len(y_true_full)==len(y_pred) else y_true_full.iloc[:len(y_pred)]
     acc = accuracy_score(y_true, y_pred)
-    accuracies[name] = acc
+    results.append({"Model": name, "Accuracy (%)": acc*100})
 
-# 3) اطبع النتائج
-print("🎯 Accuracy for all models:\n")
-for name, acc in accuracies.items():
-    print(f" - {name:14s}: {acc*100:5.2f}%")
+# 4) Build and display a table
+df_acc = pd.DataFrame(results)
+# Option A: pretty‐print in console
+print(df_acc.to_string(index=False))
+
+# Option B (in Jupyter): render as a table
+from IPython.display import display
+display(df_acc)
 
 import pandas as pd
 import matplotlib.pyplot as plt
