@@ -8,7 +8,7 @@ This project builds and compares seven supervised classifiers to predict whether
 ## 📊 Dataset
 - Name: Cybersecurity Attacks Dataset  
 - Source: Incribo’s synthetic dataset on Kaggle  
-- Link: https://www.kaggle.com/datasets/incribo/cybersecurity-attacks  
+- Link: https://www.kaggle.com/datasets/teamincribo/cyber-security-attacks  
 - Samples: 40,000  
 - Features: Originally 25 mixed numerical & categorical; ~15 used after dropping non-informative columns  
 - Target: Action Taken (0 = No Action, 1 = Action Taken)
